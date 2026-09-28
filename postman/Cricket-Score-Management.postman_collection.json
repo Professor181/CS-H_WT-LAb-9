@@ -1,0 +1,56 @@
+{
+  "info": {
+    "_postman_id": "5f5d68d8-f1d9-49c3-ae3a-cc7f8d0418d1",
+    "name": "Cricket Score Management",
+    "description": "REST API collection for teams, players, matches, innings, scoring and summaries.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "teamId", "value": "1" },
+    { "key": "playerId", "value": "1" },
+    { "key": "player2Id", "value": "2" },
+    { "key": "bowlerId", "value": "18" },
+    { "key": "matchId", "value": "1" },
+    { "key": "inningsId", "value": "1" }
+  ],
+  "item": [
+    { "name": "Teams", "item": [
+      { "name": "Get all teams", "request": { "method": "GET", "url": "{{baseUrl}}/api/teams" } },
+      { "name": "Create team", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"name\": \"New Zealand\",\n  \"shortName\": \"NZ\",\n  \"country\": \"New Zealand\",\n  \"coach\": \"Gary Stead\"\n}" }, "url": "{{baseUrl}}/api/teams" } },
+      { "name": "Get team", "request": { "method": "GET", "url": "{{baseUrl}}/api/teams/{{teamId}}" } },
+      { "name": "Update team", "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"name\": \"India\",\n  \"shortName\": \"IND\",\n  \"country\": \"India\",\n  \"coach\": \"Rahul Dravid\"\n}" }, "url": "{{baseUrl}}/api/teams/{{teamId}}" } },
+      { "name": "Delete team", "request": { "method": "DELETE", "url": "{{baseUrl}}/api/teams/{{teamId}}" } }
+    ] },
+    { "name": "Players", "item": [
+      { "name": "Get players", "request": { "method": "GET", "url": "{{baseUrl}}/api/players" } },
+      { "name": "Players by team", "request": { "method": "GET", "url": "{{baseUrl}}/api/teams/{{teamId}}/players" } },
+      { "name": "Create player", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"name\": \"Sample Player\",\n  \"role\": \"BATSMAN\",\n  \"jerseyNumber\": 99,\n  \"battingStyle\": \"Right Hand\",\n  \"bowlingStyle\": \"Not applicable\",\n  \"teamId\": {{teamId}}\n}" }, "url": "{{baseUrl}}/api/players" } },
+      { "name": "Update player", "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"name\": \"Sample Player Updated\",\n  \"role\": \"ALL_ROUNDER\",\n  \"jerseyNumber\": 99,\n  \"battingStyle\": \"Right Hand\",\n  \"bowlingStyle\": \"Right Arm Medium\",\n  \"teamId\": {{teamId}}\n}" }, "url": "{{baseUrl}}/api/players/{{playerId}}" } },
+      { "name": "Delete player", "request": { "method": "DELETE", "url": "{{baseUrl}}/api/players/{{playerId}}" } }
+    ] },
+    { "name": "Matches and innings", "item": [
+      { "name": "Create match", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"title\": \"India vs Australia\",\n  \"venue\": \"Wankhede Stadium\",\n  \"matchDate\": \"2026-09-28\",\n  \"team1Id\": 1,\n  \"team2Id\": 2\n}" }, "url": "{{baseUrl}}/api/matches" } },
+      { "name": "Get matches", "request": { "method": "GET", "url": "{{baseUrl}}/api/matches" } },
+      { "name": "Get match", "request": { "method": "GET", "url": "{{baseUrl}}/api/matches/{{matchId}}" } },
+      { "name": "Update match", "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"title\": \"India vs Australia - Updated\",\n  \"venue\": \"Wankhede Stadium\",\n  \"matchDate\": \"2026-09-28\",\n  \"team1Id\": 1,\n  \"team2Id\": 2\n}" }, "url": "{{baseUrl}}/api/matches/{{matchId}}" } },
+      { "name": "Delete upcoming match", "request": { "method": "DELETE", "url": "{{baseUrl}}/api/matches/{{matchId}}" } },
+      { "name": "Start match", "request": { "method": "POST", "url": "{{baseUrl}}/api/matches/{{matchId}}/start" } },
+      { "name": "Get score", "request": { "method": "GET", "url": "{{baseUrl}}/api/matches/{{matchId}}/score" } },
+      { "name": "Create innings (idempotent for current batting team)", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"battingTeamId\": 1\n}" }, "url": "{{baseUrl}}/api/matches/{{matchId}}/innings" } },
+      { "name": "List innings", "request": { "method": "GET", "url": "{{baseUrl}}/api/matches/{{matchId}}/innings" } },
+      { "name": "Get innings", "request": { "method": "GET", "url": "{{baseUrl}}/api/matches/{{matchId}}/innings/{{inningsId}}" } },
+      { "name": "Start next innings", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"battingTeamId\": 2\n}" }, "url": "{{baseUrl}}/api/matches/{{matchId}}/next-innings" } },
+      { "name": "Complete match", "request": { "method": "POST", "url": "{{baseUrl}}/api/matches/{{matchId}}/complete" } },
+      { "name": "Get match summary", "request": { "method": "GET", "url": "{{baseUrl}}/api/matches/{{matchId}}/summary" } }
+    ] },
+    { "name": "Ball scoring", "item": [
+      { "name": "Record 0 run", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"strikerId\": {{playerId}},\n  \"nonStrikerId\": {{player2Id}},\n  \"bowlerId\": {{bowlerId}},\n  \"runs\": 0,\n  \"extras\": 0,\n  \"extraType\": \"NONE\",\n  \"wicket\": false,\n  \"wicketType\": \"NONE\",\n  \"dismissedPlayerId\": null\n}" }, "url": "{{baseUrl}}/api/innings/{{inningsId}}/ball" } },
+      { "name": "Record 1 run", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"strikerId\": {{playerId}},\n  \"nonStrikerId\": {{player2Id}},\n  \"bowlerId\": {{bowlerId}},\n  \"runs\": 1,\n  \"extras\": 0,\n  \"extraType\": \"NONE\",\n  \"wicket\": false,\n  \"wicketType\": \"NONE\",\n  \"dismissedPlayerId\": null\n}" }, "url": "{{baseUrl}}/api/innings/{{inningsId}}/ball" } },
+      { "name": "Record 4 runs", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"strikerId\": {{playerId}},\n  \"nonStrikerId\": {{player2Id}},\n  \"bowlerId\": {{bowlerId}},\n  \"runs\": 4,\n  \"extras\": 0,\n  \"extraType\": \"NONE\",\n  \"wicket\": false,\n  \"wicketType\": \"NONE\",\n  \"dismissedPlayerId\": null\n}" }, "url": "{{baseUrl}}/api/innings/{{inningsId}}/ball" } },
+      { "name": "Record 6 runs", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"strikerId\": {{playerId}},\n  \"nonStrikerId\": {{player2Id}},\n  \"bowlerId\": {{bowlerId}},\n  \"runs\": 6,\n  \"extras\": 0,\n  \"extraType\": \"NONE\",\n  \"wicket\": false,\n  \"wicketType\": \"NONE\",\n  \"dismissedPlayerId\": null\n}" }, "url": "{{baseUrl}}/api/innings/{{inningsId}}/ball" } },
+      { "name": "Record wicket", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"strikerId\": {{playerId}},\n  \"nonStrikerId\": {{player2Id}},\n  \"bowlerId\": {{bowlerId}},\n  \"runs\": 0,\n  \"extras\": 0,\n  \"extraType\": \"NONE\",\n  \"wicket\": true,\n  \"wicketType\": \"BOWLED\",\n  \"dismissedPlayerId\": {{playerId}}\n}" }, "url": "{{baseUrl}}/api/innings/{{inningsId}}/ball" } },
+      { "name": "Get ball history", "request": { "method": "GET", "url": "{{baseUrl}}/api/innings/{{inningsId}}/balls" } }
+    ] }
+  ]
+}
